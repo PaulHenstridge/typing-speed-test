@@ -5,7 +5,7 @@ const TextBox = styled.p`
     font-size: 1.2rem;
 `
 const HighlightedText = styled.span`
-    background-color: ${ props => props.isCorrect ? 'green' : 'red'};
+    background-color: ${({isCorrect}) => isCorrect ? 'green' : 'red'};
     color: black;
 `
 
@@ -19,7 +19,7 @@ const TextWindow = ({text, completedLength, isCorrect}) => {
 
     return ( 
         <TextBox>
-            <HighlightedText isCorrect={isCorrect} >{highlighted}</HighlightedText>
+            <HighlightedText isCorrect={isCorrect}>{highlighted}</HighlightedText>
             <RegularText>{regular}</RegularText>
         </TextBox> );
 }

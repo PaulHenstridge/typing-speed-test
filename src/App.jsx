@@ -9,7 +9,7 @@ import texts from './assets/texts'
 import Timer from './components/Timer'
 
 function App() {
-  const [text, setText] = useState(`Words and words and words and words and words and more words.`)
+  const [text, setText] = useState(`Words and words and words`)
 
   const [userInput, setUserInput] = useState('')
 
@@ -20,6 +20,8 @@ function App() {
   const [clockIsRunning, setClockIsRunning] = useState(false)
   const [elapsedTime, setElapsedTime] = useState(0)
 
+  const [errors, setErrors] = useState(0)
+
   useEffect( () => {
     if (!clockIsRunning) return
 
@@ -29,6 +31,9 @@ function App() {
     return () => clearInterval(timerId)
   }, [clockIsRunning, elapsedTime])
 
+  useEffect( () => {
+    if(!correct) setErrors(errors + 1)
+  },[correct])
 
   const onUserInput = (e) => {
     if (elapsedTime === 0) setClockIsRunning(true)
@@ -44,14 +49,14 @@ function App() {
   }
 
   const returnResults = () => {
-    setWpmScore(`Done you did ${Math.floor(userInput.length/5)} words in ${elapsedTime} secs! thats ${(elapsedTime/(userInput.length/5))*60} wpm!!!! wooopidooo.`)
+    setWpmScore(Math.round(((userInput.length/5)/elapsedTime)*60))
   }
 
   return (
     <>
     <TextWindow text={text} completedLength={userInput.length} isCorrect={correct}/>
     <InputContainer userInput={userInput} handleUserInput={onUserInput}/>
-    <Dashboard correct={correct} words={Math.floor(userInput.length/5)} wpm={wpmScore}/>
+    <Dashboard correct={correct} chars={userInput.length} wpm={wpmScore} errors={errors}/>
     <Timer secsElapsed={elapsedTime}/>
     </>
   )
