@@ -7,9 +7,10 @@ import InputContainer from './components/InputContainer'
 import Dashboard from './components/Dashboard'
 import texts from './assets/texts'
 import Timer from './components/Timer'
+import TextSelect from './components/TextSelect'
 
 function App() {
-  const [text, setText] = useState(`Words and words and words`)
+  const [text, setText] = useState(``)
 
   const [userInput, setUserInput] = useState('')
 
@@ -22,7 +23,11 @@ function App() {
 
   const [errors, setErrors] = useState(0)
 
-  useEffect( () => {
+  const chooseText = (text) => {
+    setText(text)
+  }
+
+  useEffect(() => {
     if (!clockIsRunning) return
 
     const timerId = setInterval( ()=> {
@@ -31,7 +36,7 @@ function App() {
     return () => clearInterval(timerId)
   }, [clockIsRunning, elapsedTime])
 
-  useEffect( () => {
+  useEffect(() => {
     if(!correct) setErrors(errors + 1)
   },[correct])
 
@@ -54,6 +59,7 @@ function App() {
 
   return (
     <>
+    <TextSelect handleTextSelection={chooseText}/>
     <TextWindow text={text} completedLength={userInput.length} isCorrect={correct}/>
     <InputContainer userInput={userInput} handleUserInput={onUserInput}/>
     <Dashboard correct={correct} chars={userInput.length} wpm={wpmScore} errors={errors}/>
