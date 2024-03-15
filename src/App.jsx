@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard'
 import texts from './assets/texts'
 import Timer from './components/Timer'
 import TextSelect from './components/TextSelect'
+import Header from './components/Header'
 
 function App() {
   const [text, setText] = useState(``)
@@ -23,8 +24,12 @@ function App() {
 
   const [errors, setErrors] = useState(0)
 
+  const [textSelected, setTextSelected] = useState(false)
+
   const chooseText = (text) => {
     setText(text)
+    setTextSelected(true)
+    console.log(text)
   }
 
   useEffect(() => {
@@ -59,11 +64,12 @@ function App() {
 
   return (
     <>
-    <TextSelect handleTextSelection={chooseText}/>
-    <TextWindow text={text} completedLength={userInput.length} isCorrect={correct}/>
-    <InputContainer userInput={userInput} handleUserInput={onUserInput}/>
-    <Dashboard correct={correct} chars={userInput.length} wpm={wpmScore} errors={errors}/>
-    <Timer secsElapsed={elapsedTime}/>
+    <Header />
+    {!textSelected && <TextSelect handleTextSelection={chooseText}/>}
+    {textSelected && <TextWindow text={text} completedLength={userInput.length} iscorrect={correct}/>}
+    {textSelected &&<InputContainer userInput={userInput} handleUserInput={onUserInput}/>}
+    {textSelected &&<Dashboard correct={correct} chars={userInput.length} wpm={wpmScore} errors={errors}/>}
+    {textSelected &&<Timer secsElapsed={elapsedTime}/>}
     </>
   )
 }
